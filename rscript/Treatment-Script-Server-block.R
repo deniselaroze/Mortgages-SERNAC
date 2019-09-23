@@ -11,7 +11,8 @@ args <- commandArgs(TRUE)
 #No incluir el llamado a librerias individuales, sino la carpeta donde estan instaladas
 .libPaths=("/usr/lib64/R/library/")
 
-require(plyr)
+#require(plyr)
+#library(santoku)
 #require(ggplot2)
 #theme_set(theme_bw())
 #require(scales)
@@ -32,9 +33,6 @@ require(plyr)
 #Amazon Server
 setwd("/var/www/r.cess.cl/public_html/")
 
-#Parameters
-pesouf<-27205.11 ### 3 de agosto de 2018
-path<-"/var/www/r.cess.cl/public_html/sp/"
 
 ####################################################################
 ###########################block randmisation####################### 
@@ -45,7 +43,7 @@ if(args[1] == "reset_database"){
   time <- gsub(" ", "_", time)
   
   file.copy("/var/www/r.cess.cl/public_html/sp/new.RData", sprintf("rdata_bak_%s.Rdata", time))
-  file.copy("/var/www/r.cess.cl/public_html/sp/new_orig.RData", "new.RData", overwrite = T)
+  file.copy("/var/www/r.cess.cl/public_html/sp/new_orig.RData", "new_SERNAC.RData", overwrite = T)
   stop()
 }
 
@@ -55,7 +53,7 @@ if(length(args) != 3){
 }
 
 # Load data
-load(file="/var/www/r.cess.cl/public_html/sp/new.RData")
+load(file="/var/www/r.cess.cl/public_html/sp/new_SERNAC.RData")
 
 
 # args from Qualtrics
@@ -64,11 +62,11 @@ load(file="/var/www/r.cess.cl/public_html/sp/new.RData")
 # 3 - econq
 
 
-args<-c(2345, 1985, 4)
+#args<-c(2345, 1987, 4) #For testing
 
 age<-2019-args[2]
-chop(x, c(300, 600, 900), labels = LETTERS[1:4])
-
+age_cat<-if (age < 35) 1 else if (age > 55) 4 else if (age >35 & age <= 45) 2 else 3
+#age_cat
 
 
 QID = args[1]
@@ -80,8 +78,8 @@ if(sum(part.data$QID %in% QID)>0){
 } else {
   # update the data.frame
   part.data <- rbind(part.data, 
-                     data.frame(QID=args[6], 
-                                byear=as.numeric(args[2])+rnorm(1,sd=.001),
+                     data.frame(QID=args[1], 
+                                age_cat_recode=as.numeric(age_cat)+rnorm(1,sd=.001),
                                 econQ=as.numeric(args[3])+rnorm(1,sd=.001)))
   # update the seqblock objects
   n.idx <- nrow(part.data)
@@ -93,7 +91,7 @@ if(sum(part.data$QID %in% QID)>0){
   tr <- bdata$x$Tr[length(bdata$x$Tr)]
   
   # Save data
-  save(mahal,seqblock1,seqblock2k,bdata,part.data,file="/var/www/r.cess.cl/public_html/sp/new.RData")
+  save(mahal,seqblock1,seqblock2k,bdata,part.data,file="/var/www/r.cess.cl/public_html/sp/new_SERNAC.RData")
 }
 
 tr<-strsplit(tr,split = ",")[[1]]
@@ -103,16 +101,12 @@ load("/var/www/r.cess.cl/public_html/sp/nuevaBDfinal.RData")
 
 
 
-#### list of treatment functions
-#
-#namedVF<-list(control=fcn.control, treat1=fcn.treat1, treat2=fcn.treat2, treat3=fcn.treat3, treat4=fcn.treat4  )
-#namedVF<-list(control=fcn.treat2, treat1=fcn.treat2, treat2=fcn.treat2, treat3=fcn.treat2, treat4=fcn.treat2 )
+#### Names of treatment selection 
+namedTr<-c("control", "treat1", "treat2", "treat3")
 
-#### Random selection of treatment without replacement
-selected<-c(namedVF[tr[1]],namedVF[tr[2]])
-selectedQID<-names(selected) ## list of selected treatments to send to Qualtrics
-
+selected<-c(namedTr[tr[1]],namedTr[tr[2]])
 
 #envio de datos a qualtrics
-to_qs<-c(pay.op1, pay.op2, selectedQID, length1, length2)
-cat(sprintf("%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s", to_qs[1], to_qs[2], to_qs[3], to_qs[4], to_qs[5], to_qs[6], to_qs[7], to_qs[8], to_qs[9], to_qs[10], to_qs[11],to_qs[12], to_qs[13], to_qs[14], to_qs[15], to_qs[16], to_qs[17], to_qs[18], to_qs[19], to_qs[20], to_qs[21],to_qs[22], to_qs[23], to_qs[24], to_qs[25], to_qs[26], to_qs[27], to_qs[28], to_qs[29], to_qs[30], to_qs[31], to_qs[32], to_qs[33], to_qs[34]))
+to_qs<-c(selected)
+cat(sprintf("%s,%s", to_qs[1], to_qs[2]))
+

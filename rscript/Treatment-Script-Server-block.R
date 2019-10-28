@@ -71,6 +71,11 @@ age_cat<-if (age < 35) 1 else if (age > 55) 4 else if (age >35 & age <= 45) 2 el
 
 QID = args[1]
 
+#QID = 236556
+#age_cat<-1
+
+#args<-c(23569, 65, "2")
+
 if(sum(part.data$QID %in% QID)>0){
   # Retuen value to PHP via stdout
   tr <- bdata$x$Tr[which(bdata$x$QID==QID)[1]]
@@ -91,22 +96,22 @@ if(sum(part.data$QID %in% QID)>0){
   tr <- bdata$x$Tr[length(bdata$x$Tr)]
   
   # Save data
-  save(mahal,seqblock1,seqblock2k,bdata,part.data,file="/var/www/r.cess.cl/public_html/sp/new_SERNAC.RData")
+ save(mahal,seqblock1,seqblock2k,bdata,part.data,file="/var/www/r.cess.cl/public_html/sp/new_SERNAC.RData")
 }
 
-tr<-strsplit(tr,split = ",")[[1]]
+#tr<-strsplit(tr,split = ",")[[1]]
 tr<-as.numeric(tr)
 
-load("/var/www/r.cess.cl/public_html/sp/nuevaBDfinal.RData")
+#load("/var/www/r.cess.cl/public_html/sp/nuevaBDfinal.RData")
 
 
 
 #### Names of treatment selection 
 namedTr<-c("control", "treat1", "treat2", "treat3")
 
-selected<-c(namedTr[tr[1]],namedTr[tr[2]])
+selected<-c(namedTr[tr[1]])
 
 #envio de datos a qualtrics
 to_qs<-c(selected)
-cat(sprintf("%s,%s", to_qs[1], to_qs[2]))
+cat(sprintf("%s", to_qs[1]))
 

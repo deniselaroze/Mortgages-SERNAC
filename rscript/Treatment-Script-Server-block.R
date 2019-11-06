@@ -110,5 +110,6 @@ selected<-c(namedTr[tr])
 
 #envio de datos a qualtrics
 to_qs<-c(selected)
-cat(sprintf("%s", to_qs[1]))
+cat(sprintf("%s", to_qs))
+
 

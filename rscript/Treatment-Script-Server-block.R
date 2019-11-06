@@ -42,7 +42,7 @@ if(args[1] == "reset_database"){
   time <- gsub("[:alph:]", "", time)
   time <- gsub(" ", "_", time)
   
-  file.copy("/var/www/r.cess.cl/public_html/sp/new.RData", sprintf("rdata_bak_%s.Rdata", time))
+  file.copy("/var/www/r.cess.cl/public_html/sp/new_SERNAC.RData", sprintf("rdata_bak_%s.Rdata", time))
   file.copy("/var/www/r.cess.cl/public_html/sp/new_orig.RData", "new_SERNAC.RData", overwrite = T)
   stop()
 }
@@ -62,22 +62,22 @@ load(file="/var/www/r.cess.cl/public_html/sp/new_SERNAC.RData")
 # 3 - econq
 
 
-#args<-c(2345, 1987, 4) #For testing
+#args<-c(6989, "1987", 4) #For testing
+args<-as.numeric(args)
+byear<-args[2]
+#byear
 
-age<-2019-args[2]
+
+age<-2019-byear
 age_cat<-if (age < 35) 1 else if (age > 55) 4 else if (age >35 & age <= 45) 2 else 3
 #age_cat
 
 
 QID = args[1]
 
-#QID = 236556
-#age_cat<-1
-
-#args<-c(23569, 65, "2")
 
 if(sum(part.data$QID %in% QID)>0){
-  # Retuen value to PHP via stdout
+  # Return value to PHP via stdout
   tr <- bdata$x$Tr[which(bdata$x$QID==QID)[1]]
   
 } else {
@@ -102,14 +102,11 @@ if(sum(part.data$QID %in% QID)>0){
 #tr<-strsplit(tr,split = ",")[[1]]
 tr<-as.numeric(tr)
 
-#load("/var/www/r.cess.cl/public_html/sp/nuevaBDfinal.RData")
-
-
 
 #### Names of treatment selection 
 namedTr<-c("control", "treat1", "treat2", "treat3")
 
-selected<-c(namedTr[tr[1]])
+selected<-c(namedTr[tr])
 
 #envio de datos a qualtrics
 to_qs<-c(selected)

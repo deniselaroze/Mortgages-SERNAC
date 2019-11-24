@@ -33,6 +33,15 @@ args <- commandArgs(TRUE)
 #Amazon Server
 setwd("/var/www/r.cess.cl/public_html/")
 
+# args from Qualtrics
+# 1- ID
+# 2 - Birthyear
+# 3 - econq
+
+
+#args<-c("1111", "28", 4) #For testing
+
+
 
 ####################################################################
 ###########################block randmisation####################### 
@@ -56,13 +65,7 @@ if(length(args) != 3){
 load(file="/var/www/r.cess.cl/public_html/sp/new_SERNAC.RData")
 
 
-# args from Qualtrics
-# 1- ID
-# 2 - Birthyear
-# 3 - econq
 
-
-#args<-c(6989, "1987", 4) #For testing
 args<-as.numeric(args)
 byear<-args[2]
 #byear
@@ -102,14 +105,14 @@ if(sum(part.data$QID %in% QID)>0){
 #tr<-strsplit(tr,split = ",")[[1]]
 tr<-as.numeric(tr)
 
-
 #### Names of treatment selection 
 namedTr<-c("control", "treat1", "treat2", "treat3")
 
 selected<-c(namedTr[tr])
 
 #envio de datos a qualtrics
-to_qs<-c(selected)
-cat(sprintf("%s", to_qs))
+selected
+
+cat(sprintf("%s", selected))
 
 

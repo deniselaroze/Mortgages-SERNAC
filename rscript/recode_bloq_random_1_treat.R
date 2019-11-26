@@ -30,4 +30,5 @@ part.data<-part.data2
 
 rm(bdata2, part.data2)
 
-save(bdata,part.data, mahal, seqblock1, seqblock2k, file = "C:/Users/Denise Laroze/Documents/GitHub/Mortgages-SERNAC/rscript/new_SERNAC.RData")
+save(bdata,part.data, mahal, seqblock1, seqblock2k, file = "C:/Users/Denise Laroze/Documents/GitHub/Mortgages-SERNAC/rscript/new_SERNAC.RData",
+     precheck = TRUE)

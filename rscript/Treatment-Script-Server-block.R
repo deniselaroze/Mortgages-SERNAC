@@ -30,6 +30,7 @@ args <- commandArgs(TRUE)
 #require(scales)
 #require(OpenImageR)
 
+
 #Amazon Server
 setwd("/var/www/r.cess.cl/public_html/")
 
@@ -42,19 +43,18 @@ setwd("/var/www/r.cess.cl/public_html/")
 #args<-c("1111", "28", 4) #For testing
 
 
-
 ####################################################################
 ###########################block randmisation####################### 
 
-if(args[1] == "reset_database"){
-  time <- Sys.time()
-  time <- gsub("[:alph:]", "", time)
-  time <- gsub(" ", "_", time)
-  
-  file.copy("/var/www/r.cess.cl/public_html/sp/new_SERNAC.RData", sprintf("rdata_bak_%s.Rdata", time))
-  file.copy("/var/www/r.cess.cl/public_html/sp/new_orig.RData", "new_SERNAC.RData", overwrite = T)
-  stop()
-}
+#if(args[1] == "reset_database"){
+#  time <- Sys.time()
+#  time <- gsub("[:alph:]", "", time)
+#  time <- gsub(" ", "_", time)
+#  
+#  file.copy("/var/www/r.cess.cl/public_html/sp/new_SERNAC.RData", sprintf("rdata_bak_%s.Rdata", time))
+#  file.copy("/var/www/r.cess.cl/public_html/sp/new_orig.RData", "new_SERNAC.RData", overwrite = T)
+#  stop()
+#}
 
 #args <- as.vector(t(sim.data[i, ]))
 if(length(args) != 3){
@@ -62,10 +62,16 @@ if(length(args) != 3){
 }
 
 # Load data
-load(file="/var/www/r.cess.cl/public_html/sp/new_SERNAC.RData")
+load(file="/var/www/r.cess.cl/public_html/sp/new_SERNAC.rdata")
 
 
+# args from Qualtrics
+# 1- ID
+# 2 - Birthyear
+# 3 - econq
 
+
+#args<-c(6989, "1987", 4) #For testing
 args<-as.numeric(args)
 byear<-args[2]
 #byear
@@ -99,11 +105,12 @@ if(sum(part.data$QID %in% QID)>0){
   tr <- bdata$x$Tr[length(bdata$x$Tr)]
   
   # Save data
- save(mahal,seqblock1,seqblock2k,bdata,part.data,file="/var/www/r.cess.cl/public_html/sp/new_SERNAC.RData")
+ save(mahal,seqblock1,seqblock2k,bdata,part.data,file="/var/www/r.cess.cl/public_html/sp/new_SERNAC.rdata")
 }
 
 #tr<-strsplit(tr,split = ",")[[1]]
 tr<-as.numeric(tr)
+
 
 #### Names of treatment selection 
 namedTr<-c("control", "treat1", "treat2", "treat3")
@@ -111,8 +118,5 @@ namedTr<-c("control", "treat1", "treat2", "treat3")
 selected<-c(namedTr[tr])
 
 #envio de datos a qualtrics
-selected
 
-cat(sprintf("%s", selected))
-
-
+cat(sprintf("%s",selected))

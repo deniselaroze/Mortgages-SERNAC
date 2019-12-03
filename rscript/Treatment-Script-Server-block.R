@@ -78,7 +78,7 @@ byear<-args[2]
 
 
 age<-2019-byear
-age_cat<-if (age < 35) 1 else if (age > 55) 4 else if (age >35 & age <= 45) 2 else 3
+age_cat<-if (age <= 35) 1 else if (age > 55) 4 else if (age >35 & age <= 45) 2 else 3
 #age_cat
 
 
